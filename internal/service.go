@@ -23,7 +23,7 @@ func New() {
 }
 
 func Encrypt() {
-	if str, err := aes.EncryptAES(os.Getenv("STR"), os.Getenv("AES_KEY"), os.Getenv("AES_IV")); err != nil {
+	if str, err := aes.EncryptAES(os.Getenv("STR"), os.Getenv("AES_IV"), os.Getenv("AES_KEY")); err != nil {
 		panic(err.Error())
 	} else {
 		fmt.Println(str)
@@ -33,7 +33,7 @@ func Encrypt() {
 }
 
 func Decrypt() {
-	if str, err := aes.DecryptAES(os.Getenv("STR"), os.Getenv("AES_KEY"), os.Getenv("AES_IV")); err != nil {
+	if str, err := aes.DecryptAES(os.Getenv("STR"), os.Getenv("AES_IV"), os.Getenv("AES_KEY")); err != nil {
 		panic(err.Error())
 	} else {
 		fmt.Println(str)
