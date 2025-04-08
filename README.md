@@ -2,8 +2,8 @@
 
 ## .env 文件配置
 METHOD=(1 encrypt 2 decrypt)<br>
-AES_KEY_STR=<br>
-STR=<br>
+AES_KEY_STR=example<br>
+STR=example<br>
 
 ## 使用說明
 1. 加密：設置 METHOD=1，STR 為要加密的文本
