@@ -2,7 +2,7 @@
 
 ## .env 文件配置
 METHOD=(1 encrypt 2 decrypt)<br>
-AES_KEY_STR=example<br>
+AES_KEY_STR=1234567 (至少七個字)<br>
 STR=example<br>
 
 ## 使用說明
