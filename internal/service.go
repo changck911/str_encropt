@@ -5,6 +5,7 @@ import (
 	"main/internal/aes"
 	"main/internal/config"
 	"os"
+	"strings"
 )
 
 func New() {
@@ -23,21 +24,37 @@ func New() {
 }
 
 func Encrypt() {
-	if str, err := aes.EncryptAES(os.Getenv("STR"), os.Getenv("AES_IV"), os.Getenv("AES_KEY")); err != nil {
+	ciphertext, iv, err := aes.EncryptAES(os.Getenv("STR"), os.Getenv("AES_KEY"))
+	if err != nil {
 		panic(err.Error())
-	} else {
-		fmt.Println(str)
-		fmt.Print("任意鍵繼續...")
-		fmt.Scanln()
 	}
+
+	// 將加密結果和IV一起輸出，用冒號分隔
+	result := fmt.Sprintf("%s:%s", ciphertext, iv)
+	fmt.Println(result)
+	fmt.Println("請保存上面的加密結果，解密時需要輸入完整字符串（包括冒號和IV部分）")
+	fmt.Print("任意鍵繼續...")
+	fmt.Scanln()
 }
 
 func Decrypt() {
-	if str, err := aes.DecryptAES(os.Getenv("STR"), os.Getenv("AES_IV"), os.Getenv("AES_KEY")); err != nil {
-		panic(err.Error())
-	} else {
-		fmt.Println(str)
-		fmt.Print("任意鍵繼續...")
-		fmt.Scanln()
+	encryptedData := os.Getenv("STR")
+
+	// 分離加密文本和IV
+	parts := strings.Split(encryptedData, ":")
+	if len(parts) != 2 {
+		panic("加密數據格式錯誤，應為 'ciphertext:iv'")
 	}
+
+	ciphertext := parts[0]
+	iv := parts[1]
+
+	plaintext, err := aes.DecryptAES(ciphertext, iv, os.Getenv("AES_KEY"))
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Println(plaintext)
+	fmt.Print("任意鍵繼續...")
+	fmt.Scanln()
 }

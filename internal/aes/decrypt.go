@@ -7,11 +7,17 @@ import (
 	"fmt"
 )
 
-func DecryptAES(ciphertextHex string, iv string, key string) (string, error) {
+func DecryptAES(ciphertextHex string, ivHex string, key string) (string, error) {
 	// Decode ciphertext from hex string
 	ciphertext, err := hex.DecodeString(ciphertextHex)
 	if err != nil {
 		return "", fmt.Errorf("invalid ciphertext: %v", err)
+	}
+
+	// Decode IV from hex string
+	iv, err := hex.DecodeString(ivHex)
+	if err != nil {
+		return "", fmt.Errorf("invalid IV: %v", err)
 	}
 
 	// Create AES block cipher
@@ -19,10 +25,9 @@ func DecryptAES(ciphertextHex string, iv string, key string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to create cipher: %v", err)
 	}
-
 	// Decrypt ciphertext
 	plaintext := make([]byte, len(ciphertext))
-	stream := cipher.NewCFBDecrypter(block, []byte(iv))
+	stream := cipher.NewCFBDecrypter(block, iv)
 	stream.XORKeyStream(plaintext, ciphertext)
 
 	return string(plaintext), nil
